@@ -1,0 +1,20 @@
+{
+    "name": "cerebralfart/hydrate",
+    "description": "Load JSON in PHP classes",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sven Mol",
+            "email": "sven@taupeweb.nl"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "CerebralFart\\Hydrate\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^8.0"
+    }
+}
