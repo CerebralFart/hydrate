@@ -14,7 +14,15 @@
             "CerebralFart\\Hydrate\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "CerebralFart\\Hydrate\\Test\\": "test/"
+        }
+    },
     "require": {
         "php": "^8.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0.0"
     }
 }
