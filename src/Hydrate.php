@@ -16,7 +16,7 @@ class Hydrate {
         $instance = $refClass->newInstanceWithoutConstructor();
 
         foreach ($data as $key => $value) {
-            $instance->$key = $value;
+            $refClass->getProperty($key)->setValue($instance,$value);
         }
 
         return $instance;
