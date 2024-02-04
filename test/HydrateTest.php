@@ -2,6 +2,7 @@
 
 namespace CerebralFart\Hydrate\Test;
 
+use CerebralFart\Hydrate\Exceptions\ClassNotFoundException;
 use CerebralFart\Hydrate\Exceptions\UninitializedPropertyException;
 use CerebralFart\Hydrate\Exceptions\UninstantiableClassException;
 use CerebralFart\Hydrate\Hydrate;
@@ -48,6 +49,14 @@ class HydrateTest extends TestCase {
         $this->assertEquals('hydrate', $struct->key);
         $this->assertEquals('awesome', $struct->value);
         $this->assertObjectNotHasProperty('meta', $struct);
+    }
+
+    public function test_throws_exception_on_missing_target_classes() {
+        $this->assertThrows(
+            fn() => Hydrate::load([], 'NonExistentClass'),
+            ClassNotFoundException::class,
+            'NonExistentClass',
+        );
     }
 
     public function test_throws_exception_when_hydrating_internal_class() {

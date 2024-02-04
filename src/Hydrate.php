@@ -2,6 +2,7 @@
 
 namespace CerebralFart\Hydrate;
 
+use CerebralFart\Hydrate\Exceptions\ClassNotFoundException;
 use CerebralFart\Hydrate\Exceptions\HydrationException;
 use CerebralFart\Hydrate\Exceptions\UninitializedPropertyException;
 use CerebralFart\Hydrate\Exceptions\UninstantiableClassException;
@@ -16,6 +17,10 @@ class Hydrate {
      * @throws HydrationException
      */
     public static function load($data, string $type): mixed {
+        if (!class_exists($type)) {
+            throw new ClassNotFoundException($type);
+        }
+
         $refClass = new ReflectionClass($type);
 
         if ($refClass->isInternal() && $refClass->isFinal()) {
