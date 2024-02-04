@@ -31,4 +31,18 @@ class HydrateTest extends TestCase {
         $this->assertEquals('hydrate', $struct->getKey());
         $this->assertEquals('awesome', $struct->getValue());
     }
+
+    public function test_overcomplete_properties_are_ignored() {
+        $data = [
+            'key' => 'hydrate',
+            'value' => 'awesome',
+            'meta' => 'does not exist',
+        ];
+        $struct = Hydrate::load($data, KVPair::class);
+
+        $this->assertInstanceOf(KVPair::class, $struct);
+        $this->assertEquals('hydrate', $struct->key);
+        $this->assertEquals('awesome', $struct->value);
+        $this->assertObjectNotHasProperty('meta', $struct);
+    }
 }

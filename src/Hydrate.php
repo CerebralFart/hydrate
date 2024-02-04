@@ -15,8 +15,12 @@ class Hydrate {
         $refClass = new ReflectionClass($type);
         $instance = $refClass->newInstanceWithoutConstructor();
 
-        foreach ($data as $key => $value) {
-            $refClass->getProperty($key)->setValue($instance,$value);
+        $properties = $refClass->getProperties();
+        foreach ($properties as $property) {
+            $name = $property->getName();
+            if (array_key_exists($name, $data)) {
+                $property->setValue($instance, $data[$name]);
+            }
         }
 
         return $instance;
