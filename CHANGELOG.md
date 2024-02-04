@@ -1,4 +1,5 @@
 ## Unreleased
+- Throw an exception when properties are not initialized, i.e. no default and not hydrated
 - Load properties from those available in class to prevent setting dynamic properties
 
 ## 0.0.2

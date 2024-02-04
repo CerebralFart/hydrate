@@ -15,6 +15,5 @@ $structure = Hydrate::load($data, Model::class);
 ## Roadmap
 ### 0.1.0
 - Add more informative errors
-- Validate all properties have been set
 - Load nested objects
 - Load array properties

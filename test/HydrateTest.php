@@ -2,9 +2,11 @@
 
 namespace CerebralFart\Hydrate\Test;
 
+use CerebralFart\Hydrate\Exceptions\UninitializedPropertyException;
 use CerebralFart\Hydrate\Hydrate;
 use CerebralFart\Hydrate\Test\Mocks\KVPair;
 use CerebralFart\Hydrate\Test\Mocks\PrivateKVPair;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class HydrateTest extends TestCase {
@@ -44,5 +46,31 @@ class HydrateTest extends TestCase {
         $this->assertEquals('hydrate', $struct->key);
         $this->assertEquals('awesome', $struct->value);
         $this->assertObjectNotHasProperty('meta', $struct);
+    }
+
+    public function test_throws_exception_on_missing_property() {
+        $this->assertThrows(
+            fn() => Hydrate::load([
+                'key' => 'hydrate',
+            ], KVPair::class),
+            UninitializedPropertyException::class,
+            'KVPair::value',
+        );
+    }
+
+    /**
+     * @param callable $function
+     * @param class-string<Exception> $exceptionType
+     * @param string $expectedMessage
+     * @return void
+     */
+    private function assertThrows(callable $function, string $exceptionType = Exception::class, string $expectedMessage = ''): void {
+        try {
+            $function();
+            $this->fail(sprintf("Expected function to throw a %s exception", $exceptionType));
+        } catch (Exception$exception) {
+            $this->assertInstanceOf($exceptionType, $exception);
+            $this->assertStringContainsString($expectedMessage, $exception->getMessage());
+        }
     }
 }
