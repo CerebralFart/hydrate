@@ -4,6 +4,7 @@ namespace CerebralFart\Hydrate;
 
 use CerebralFart\Hydrate\Exceptions\HydrationException;
 use CerebralFart\Hydrate\Exceptions\UninitializedPropertyException;
+use CerebralFart\Hydrate\Exceptions\UninstantiableClassException;
 use ReflectionClass;
 
 class Hydrate {
@@ -16,6 +17,11 @@ class Hydrate {
      */
     public static function load($data, string $type): mixed {
         $refClass = new ReflectionClass($type);
+
+        if ($refClass->isInternal() && $refClass->isFinal()) {
+            throw new UninstantiableClassException($type);
+        }
+
         $instance = $refClass->newInstanceWithoutConstructor();
 
         $properties = $refClass->getProperties();

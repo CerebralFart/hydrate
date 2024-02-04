@@ -3,10 +3,12 @@
 namespace CerebralFart\Hydrate\Test;
 
 use CerebralFart\Hydrate\Exceptions\UninitializedPropertyException;
+use CerebralFart\Hydrate\Exceptions\UninstantiableClassException;
 use CerebralFart\Hydrate\Hydrate;
 use CerebralFart\Hydrate\Test\Mocks\KVPair;
 use CerebralFart\Hydrate\Test\Mocks\PrivateKVPair;
 use Exception;
+use Generator;
 use PHPUnit\Framework\TestCase;
 
 class HydrateTest extends TestCase {
@@ -46,6 +48,14 @@ class HydrateTest extends TestCase {
         $this->assertEquals('hydrate', $struct->key);
         $this->assertEquals('awesome', $struct->value);
         $this->assertObjectNotHasProperty('meta', $struct);
+    }
+
+    public function test_throws_exception_when_hydrating_internal_class() {
+        $this->assertThrows(
+            fn() => Hydrate::load([], Generator::class),
+            UninstantiableClassException::class,
+            'Generator',
+        );
     }
 
     public function test_throws_exception_on_missing_property() {
